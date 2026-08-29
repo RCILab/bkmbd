@@ -1,6 +1,6 @@
 # BK-MBD — Project Page
 
-Anonymous project page for **Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control** (BK-MBD), submitted to IEEE ICRA 2026.
+Anonymous project page for **Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control** (BK-MBD), submitted to IEEE ICRA 2027 (Seoul, 24–28 May 2027).
 
 Built on the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template). Static site — no build step, just open `index.html` or serve the folder.
 
