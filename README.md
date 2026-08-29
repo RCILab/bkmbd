@@ -8,12 +8,13 @@ Built on the [Academic Project Page Template](https://github.com/eliahuhorwitz/A
 python -m http.server 8000    # then open http://localhost:8000
 ```
 
-## Before publishing
+Live at **https://rcilab.khu.ac.kr/bkmbd/** — GitHub Pages from the `master` branch, repository root.
 
-1. **Replace `ANON_URL_PLACEHOLDER`** (7 occurrences in `index.html`) with the real page URL once the anonymous repo or GitHub Pages site exists. It appears in the Open Graph, Twitter, `citation_pdf_url` and JSON-LD blocks.
-2. **Enable the arXiv / Code buttons** in the hero section — they are currently rendered disabled with a "Coming Soon" label.
-3. **Replace `static/images/favicon.ico`** — it is still the one shipped with the template.
-4. Optionally add a 1200×630 `static/images/social_preview.png` for link previews.
+## TODO
+
+1. **Enable the arXiv / Code buttons** in the hero section — they are currently rendered disabled with a "Coming Soon" label.
+2. **Replace `static/images/favicon.ico`** — it is still the one shipped with the template.
+3. Optionally add a 1200×630 `static/images/social_preview.png` for link previews.
 
 The page carries no author or institution information, for double-anonymous review.
 
@@ -54,9 +55,11 @@ done
 
 `static/pdfs/bkmbd_paper.pdf` is a copy of the compiled `main.pdf`; refresh it whenever the paper is rebuilt.
 
-## Deploying to GitHub Pages
+## Deployment
 
-`.nojekyll` is already present, so `static/` is served as-is. Push the folder contents to the repository root (or to `docs/`) and enable Pages on that branch.
+Pushing to `master` on [RCILab/bkmbd](https://github.com/RCILab/bkmbd) redeploys the site. `.nojekyll` is present, so `static/` is served as-is.
+
+The RCILab organization site carries the custom domain `rcilab.khu.ac.kr`, and project pages inherit it automatically — which is why this page lives at `rcilab.khu.ac.kr/bkmbd/` rather than `rcilab.github.io/bkmbd/` (the latter 301-redirects there). **Do not add a `CNAME` file to this repo**; it would override the inherited domain.
 
 ## License
 
