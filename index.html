@@ -14,8 +14,8 @@
        automatically, so do NOT add a CNAME file here -- it would override it.
 
        TODO:
-       - Enable the arXiv / Code buttons in the hero when those links exist.
-       - Replace static/images/favicon.ico, still the template default.
+       - Enable the arXiv button in the hero once the preprint is posted, and add
+         a Code button back if the implementation is released.
 
        Assets present in static/:
        - static/images/figure1.png     (one control step of BK-MBD, teaser)
@@ -27,8 +27,8 @@
        - static/images/figure4_c.jpg   (FR3 circular tracking, DK-MBD-split)
        - static/images/figure4_d.jpg   (FR3 circular tracking, BK-MPPI)
        - static/images/figure5.png     (signed TCP tracking error per axis)
-       - static/images/favicon.ico
        - static/pdfs/bkmbd_paper.pdf
+       (no favicon file: the tab icon is deliberately blank, see below)
 
        VIDEO SLOTS (markup is written and commented out below; drop the file in
        and uncomment the matching block):
@@ -84,8 +84,11 @@
 
   <title>BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control | Project Page</title>
 
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  <!-- Deliberately blank. An empty data URI stops the browser from requesting a
+       favicon at all, so the tab falls back to its own default placeholder. Simply
+       dropping this tag would instead send the browser to /favicon.ico at the site
+       root, which is not ours to control. -->
+  <link rel="icon" href="data:,">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
@@ -170,12 +173,6 @@
                     </a>
                   </span>
 
-                  <span class="link-block">
-                    <a class="external-link button is-normal is-rounded is-dark" aria-disabled="true" style="pointer-events: none; opacity: 0.65;">
-                      <span class="icon"><i class="fab fa-github"></i></span>
-                      <span>Code (Coming Soon)</span>
-                    </a>
-                  </span>
                 </div>
               </div>
 

@@ -12,9 +12,14 @@ Live at **https://rcilab.khu.ac.kr/bkmbd/** — GitHub Pages from the `master` b
 
 ## TODO
 
-1. **Enable the arXiv / Code buttons** in the hero section — they are currently rendered disabled with a "Coming Soon" label.
-2. **Replace `static/images/favicon.ico`** — it is still the one shipped with the template.
-3. Optionally add a 1200×630 `static/images/social_preview.png` for link previews.
+1. **Enable the arXiv button** in the hero once the preprint is posted — it is currently rendered disabled with a "Coming Soon" label. The Code button has been removed; add it back if the implementation is released.
+2. Optionally add a 1200×630 `static/images/social_preview.png` for link previews.
+
+## Favicon
+
+There is deliberately none. `index.html` declares `<link rel="icon" href="data:,">`, an empty data URI, so the browser makes no favicon request and the tab shows its own default placeholder.
+
+Do not simply delete that tag to get the same effect: with no `rel="icon"` the browser falls back to `/favicon.ico` at the site root, which belongs to the organization site, not this project page. To adopt a real icon later, drop the file in `static/images/` and point the tag at it.
 
 The page carries no author or institution information, for double-anonymous review.
 
