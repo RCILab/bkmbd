@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- =============================================================
+       BK-MBD anonymous project page
+       Target venue: IEEE ICRA 2026, Submitted.
+       Keep author/institution information removed for double-anonymous review.
+
+       TODO before publishing:
+       - Replace every occurrence of ANON_URL_PLACEHOLDER below with the real
+         anonymous.4open.science (or GitHub Pages) URL once it is generated.
+       - Enable the arXiv / Code buttons in the hero when those links exist.
+
+       Assets present in static/:
+       - static/images/figure1.png     (one control step of BK-MBD, teaser)
+       - static/images/figure2.png     (executed tool paths, five rollout models)
+       - static/images/figure3_a.png   (non-convex passage, BK-MBD)
+       - static/images/figure3_b.png   (non-convex passage, convexified QP-MPC)
+       - static/images/figure4_a.jpg   (FR3 circular tracking, BK-MBD)
+       - static/images/figure4_b.jpg   (FR3 circular tracking, DK-MBD)
+       - static/images/figure4_c.jpg   (FR3 circular tracking, DK-MBD-split)
+       - static/images/figure4_d.jpg   (FR3 circular tracking, BK-MPPI)
+       - static/images/figure5.png     (signed TCP tracking error per axis)
+       - static/images/favicon.ico
+       - static/pdfs/bkmbd_paper.pdf
+
+       VIDEO SLOTS (markup is written and commented out below; drop the file in
+       and uncomment the matching block):
+       - static/videos/overview.mp4        -> "Overview" section
+       - static/videos/drone_passage.mp4   -> "Non-Convex Passage" section
+       - static/videos/hw_bkmbd.mp4        -> "Validation on the Physical Robot", left cell
+       - static/videos/hw_dkmbd.mp4        -> "Validation on the Physical Robot", right cell
+       ============================================================= -->
+
+  <meta name="title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
+  <meta name="description" content="BK-MBD runs the annealed sampling of Model-Based Diffusion at the control rate by performing every rollout with a bilinear Koopman model, planning in under 15 ms within a 50 ms control period.">
+  <meta name="keywords" content="Koopman operator, model-based diffusion, sampling-based control, MPPI, bilinear model, data-driven control, real-time robot control, model learning for control">
+  <meta name="author" content="Anonymous Authors">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Anonymous Submission">
+  <meta property="og:title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
+  <meta property="og:description" content="A bilinear Koopman rollout carries the configuration-dependent input gain, so the annealed sampling of MBD fits inside a 50 ms control period.">
+  <meta property="og:url" content="ANON_URL_PLACEHOLDER">
+  <meta property="og:image" content="ANON_URL_PLACEHOLDER/static/images/figure1.png">
+  <meta property="og:image:alt" content="BK-MBD project page preview">
+  <meta property="article:published_time" content="2026-01-01T00:00:00.000Z">
+  <meta property="article:author" content="Anonymous Authors">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Koopman Operator">
+  <meta property="article:tag" content="Model-Based Diffusion">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@anonymous">
+  <meta name="twitter:creator" content="@anonymous">
+  <meta name="twitter:title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
+  <meta name="twitter:description" content="Model-Based Diffusion at the control rate, with every rollout performed by a learned bilinear Koopman model.">
+  <meta name="twitter:image" content="ANON_URL_PLACEHOLDER/static/images/figure1.png">
+  <meta name="twitter:image:alt" content="BK-MBD project page preview">
+
+  <meta name="citation_title" content="Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
+  <meta name="citation_author" content="Anonymous, Authors">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="IEEE International Conference on Robotics and Automation (ICRA)">
+  <meta name="citation_pdf_url" content="ANON_URL_PLACEHOLDER/static/pdfs/bkmbd_paper.pdf">
+
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control | Project Page</title>
+
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js?v=2"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control",
+    "description": "BK-MBD runs the annealed sampling of Model-Based Diffusion at the control rate by performing every rollout with a bilinear Koopman model identified from interaction data.",
+    "author": [{"@type": "Person", "name": "Anonymous Authors"}],
+    "datePublished": "2026-01-01",
+    "publisher": {"@type": "Organization", "name": "IEEE International Conference on Robotics and Automation (ICRA), Submitted"},
+    "url": "ANON_URL_PLACEHOLDER",
+    "image": "ANON_URL_PLACEHOLDER/static/images/figure1.png",
+    "keywords": ["Koopman operator", "model-based diffusion", "sampling-based control", "bilinear model", "data-driven control", "real-time robot control"],
+    "abstract": "Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, limits its applicability to offline settings. To address this limitation, this paper proposes Bilinear Koopman Model-Based Diffusion (BK-MBD). The proposed method lifts the robot state into a high-dimensional space only once per control step and propagates all candidates in the lifted space thereafter, so each rollout reduces to a fixed number of matrix-vector multiplications. The lift is bilinear so that the input gain varies with the robot configuration, which a linear lift cannot represent.",
+    "citation": "@inproceedings{anonymous2026bkmbd, title={Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control}, author={Anonymous Authors}, booktitle={IEEE International Conference on Robotics and Automation (ICRA)}, note={Submitted}, year={2026}}",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/"
+  }
+  </script>
+</head>
+<body>
+
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+    <!-- ===================== Title ===================== -->
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title publication-title" style="font-size: clamp(1.45rem, 2.75vw, 2.55rem); line-height: 1.15; letter-spacing: -0.02em;">
+                <span style="display: block;">Koopman-Accelerated Model-Based Diffusion</span>
+                <span style="display: block;">for Real-Time Robot Control</span>
+              </h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">Anonymous Authors</span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">Submitted to IEEE International Conference on Robotics and Automation (ICRA) 2026</span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="static/pdfs/bkmbd_paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a class="external-link button is-normal is-rounded is-dark" aria-disabled="true" style="pointer-events: none; opacity: 0.65;">
+                      <span class="icon"><i class="ai ai-arxiv"></i></span>
+                      <span>arXiv (Coming Soon)</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a class="external-link button is-normal is-rounded is-dark" aria-disabled="true" style="pointer-events: none; opacity: 0.65;">
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code (Coming Soon)</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Overview (teaser figure + video slot) ===================== -->
+    <section class="hero teaser">
+      <div class="container is-fluid" style="width: min(96vw, 1280px); max-width: 1280px;">
+        <div class="hero-body" style="padding-left: 0; padding-right: 0;">
+          <h2 class="title is-3 has-text-centered">Overview</h2>
+
+          <figure class="image has-text-centered">
+            <img src="static/images/figure1.png" alt="One control step of BK-MBD: the state is lifted once, then the annealed search draws candidates, rolls them out through the bilinear Koopman model, and updates the plan with a cost-weighted mean" loading="eager" style="width: 100%; height: auto;">
+            <figcaption class="content is-size-5" style="margin-top: 0.85rem; line-height: 1.55;">
+              <b>One control step of BK-MBD.</b> The state is lifted once, and every rollout of the annealed search is then a product of learned matrices.
+            </figcaption>
+          </figure>
+
+          <!-- VIDEO SLOT (overview): drop static/videos/overview.mp4 in place and uncomment.
+          <div class="has-text-centered" style="margin-top: 2rem;">
+            <video id="overview-video" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
+              <source src="static/videos/overview.mp4" type="video/mp4">
+            </video>
+          </div>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Abstract ===================== -->
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, limits its applicability to offline settings. To address this limitation, this paper proposes <b>Bilinear Koopman Model-Based Diffusion (BK-MBD)</b>. The proposed method lifts the robot's state into a high-dimensional space only once per control step and propagates all candidates in the lifted space thereafter, so each rollout reduces to a fixed number of matrix&ndash;vector multiplications. The lift is bilinear so that the input gain varies with the robot's configuration, which a linear lift cannot represent. In simulation, BK-MBD planned in a maximum of 14.7&nbsp;ms within a 50&nbsp;ms control period and reached the goal on every trial, where a linear lift almost never did. The annealed schedule improves closed-loop accuracy under the learned rollout, and BK-MBD threaded a passage no single convex region covers, where a convexified bilinear controller rarely succeeded. On a physical manipulator, BK-MBD tracked an initially unknown moving target within the control period and was the only method that met both the tracking task and the deadline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Contributions ===================== -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Contributions</h2>
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content is-size-5" style="line-height: 1.7;">
+              <ul>
+                <li><b>MBD at the control rate.</b> A bilinear rollout carrying the configuration-dependent input gain is evaluated without freezing or convexification, and the entire annealing process completes within the control period.</li>
+                <li><b>Annealing under a learned rollout.</b> Fixed noise and an annealed schedule are compared under both a learned and an exact rollout. Annealing improves closed-loop accuracy on the learned surrogate while the benefit disappears under the exact rollout, which shows that annealing relieves the sensitivity to rollout error.</li>
+                <li><b>Real-time validation on a physical robot.</b> BK-MBD tracks an initially unknown moving target on a physical manipulator within the control period. A state-independent input gain loses the target and a rollout of the true dynamics cannot be run at the control rate, so both requirements bind on hardware as well.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Method ===================== -->
+    <section class="section is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <h2 class="title is-3 has-text-centered">Method</h2>
+
+            <div class="content has-text-justified is-size-5" style="line-height: 1.7;">
+              <p>BK-MBD keeps the annealed sampling optimizer of MBD and has every rollout performed by a lifted surrogate. One control step proceeds as follows.</p>
+              <ol>
+                <li><b>Lift once.</b> The measured features are encoded into the lifted state <em>z</em> = &Psi;<sub>&theta;</sub>(b), where a fixed feature map &tau; supplies the trigonometric terms and a small network carries the products among them. The encoder sits outside both loops below, so it is evaluated once per control step rather than once per candidate.</li>
+                <li><b>Draw candidates.</b> At annealing stage <em>j</em>, the nominal sequence is perturbed as U<sub>k</sub> = U + &sigma;<sub>j</sub>&epsilon;<sub>k</sub> and projected onto the admissible input set.</li>
+                <li><b>Roll out in the lifted space.</b> Each candidate is propagated by the bilinear update z<sup>+</sup> = M(u)z + B<sub>0</sub>u, which costs <em>m</em>+1 matrix&ndash;vector products per step and shares the lifted state they multiply.</li>
+                <li><b>Update by a cost-weighted mean.</b> Softmax weights at temperature &alpha; combine the candidates into the new nominal, and the schedule moves to the next, narrower noise level.</li>
+              </ol>
+            </div>
+
+            <h3 class="title is-4" style="margin-top: 2.25rem;">Why the rollout must be bilinear</h3>
+            <div class="content has-text-justified is-size-5" style="line-height: 1.7;">
+              <p>A sampling planner reads only <em>differences</em> of cost within a population whose members differ in the control sequence alone, so what governs it is the response the rollout predicts to an applied input. Decoding one step of a linear lift gives a sensitivity C<sub>y</sub>B, a single matrix over the whole operating set, and neither the lifted dimension nor the encoder changes that.</p>
+              <p>The plant instead answers with an input gain that takes a different value at every configuration. Writing &nu;<sub>&Phi;</sub> for the variation of that gain over the operating set, the paper proves that <em>every</em> constant matrix M satisfies</p>
+              <p class="has-text-centered"><b>sup<sub>s</sub> &#8214; &Delta;t &Phi;(s) &minus; M &#8214; &nbsp;&ge;&nbsp; &frac12; &nu;<sub>&Phi;</sub> &Delta;t,</b></p>
+              <p>so a linear lift carries an irreducible input-channel error that no amount of capacity removes. The bilinear class has a decoded input gain that is affine in the lifted state, which matches the form the plant exhibits, and the sampling planner evaluates only the total cost of a sequence, so it uses that state dependence as it stands rather than freezing or convexifying it.</p>
+            </div>
+
+            <h3 class="title is-4" style="margin-top: 2.25rem;">Identification</h3>
+            <div class="content has-text-justified is-size-5" style="line-height: 1.7;">
+              <p>A sampling planner propagates a candidate over the whole horizon and separates candidates by the cost that propagation accumulates, so a model accurate at one step but drifting over the horizon has its drift read as a property of the plant. The lifted features and the lifted dynamics are therefore fitted jointly on length-<em>T</em> snippets matched to the planning horizon, with a decoded-prediction term and a latent-consistency term that holds the propagated state to the image of the encoder under a stop-gradient target.</p>
+              <p>The bilinear input matrices are initialized at B<sub>i</sub> = 0, so training begins exactly at the linear model and the coupling term departs from zero only to the extent that the data support it. The two classes therefore share a starting point, an encoder, a dataset and an objective, and differ only in whether the coupling term is permitted to move.</p>
+            </div>
+
+            <h3 class="title is-4" style="margin-top: 2.25rem;">Annealing under a learned rollout</h3>
+            <div class="content has-text-justified is-size-5" style="line-height: 1.7;">
+              <p>A learned rollout evaluates a perturbed cost, and the part of that perturbation which is not common to the population reorders candidates. The surrogate therefore admits minima of its own, and under receding horizon the robot executes whatever the sampler settles on. A schedule cannot remove this error; its role is to reduce how strongly one control step depends on a single local view of the surrogate cost.</p>
+              <p>One noise level fixes both how widely a stage samples and how large a step it takes, so a fixed-noise sampler must trade exploration against refinement. The annealed schedule separates the two roles across successive stages: it opens wide, where the population is spread furthest from the current plan, and closes narrow, where the smoothing and the final displacement are smallest. Since the executed command comes from the last stage, the early stages expose the optimizer to a broader neighborhood while the last stage refines under a less-smoothed cost.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Experiments: rollout class & latency ===================== -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Rollout Class and Planning Latency</h2>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Exchanging the rollout model alone, under an identical planner, settles whether the input gain is what decides reaching. <b>DK-MBD</b> leaves the input gain a constant matrix; <b>DK-MBD-large</b> keeps that matrix but raises the lifted dimension; <b>MLP-MBD</b> lets it depend on the state without structure; <b>DK-MBD-split</b> supplies it from analytic forward kinematics; and <b>MBD-true</b> rolls out the true dynamics as an oracle. Trials are paired across conditions over 5 training seeds and 10 goals.</p>
+            </div>
+
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">Reaching accuracy under an identical planner</caption>
+                <thead>
+                  <tr><th>Rollout model</th><th>Input gain</th><th>Reach 5&nbsp;cm &uarr;</th><th>Reach 1&nbsp;cm &uarr;</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>MBD-true <em>(oracle)</em></td><td>true dynamics</td><td>10/10</td><td>10/10</td></tr>
+                  <tr><td>DK-MBD</td><td>constant matrix</td><td>10/50</td><td>1/50</td></tr>
+                  <tr><td>DK-MBD-large</td><td>constant matrix, larger lift</td><td>11/50</td><td>1/50</td></tr>
+                  <tr><td>MLP-MBD</td><td>unstructured, state-dependent</td><td>41/50</td><td>0/50</td></tr>
+                  <tr><td>DK-MBD-split</td><td>analytic forward kinematics</td><td>50/50</td><td>50/50</td></tr>
+                  <tr><td><b>BK-MBD (ours)</b></td><td>bilinear, state-dependent</td><td><b>50/50</b></td><td><b>50/50</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>BK-MBD reached the 1&nbsp;cm tolerance on 50/50 trials, matching the oracle, while DK-MBD reached it on 1/50 and came to rest a median 0.248&nbsp;m from the goal. DK-MBD-split also reached 50/50 and differs from DK-MBD in the input gain alone, so that is what separated the two. DK-MBD-large and MLP-MBD stopped a median 0.239&nbsp;m and 0.054&nbsp;m away, so neither capacity nor unstructured expressiveness removes the failure, which leaves the input gain as the cause.</p>
+            </div>
+
+            <figure class="image has-text-centered" style="margin: 2rem 0 1.5rem;">
+              <img src="static/images/figure2.png" alt="Executed tool paths on one goal for five rollout models; BK-MBD and DK-MBD-split converge on the goal while DK-MBD sweeps far away" loading="lazy" style="width: 100%; height: auto;">
+              <figcaption class="content is-size-5" style="margin-top: 0.85rem; line-height: 1.55;">
+                <b>Executed tool paths on one goal.</b> The five runs share the planner, the training seed and the random stream, so they differ in the rollout model alone.
+              </figcaption>
+            </figure>
+
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">End-to-end planning latency per receding-horizon control step</caption>
+                <thead>
+                  <tr><th>Rollout model</th><th>Median [ms] &darr;</th><th>Worst [ms] &darr;</th><th>Deadline misses &darr;</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>MBD-true <em>(oracle)</em></td><td>2598</td><td>2745</td><td>1200</td></tr>
+                  <tr><td>DK-MBD</td><td><b>7.6</b></td><td><b>12.5</b></td><td><b>0</b></td></tr>
+                  <tr><td><b>BK-MBD (ours)</b></td><td>11.0</td><td>14.7</td><td><b>0</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>End-to-end planning time covers every line of one control step over all five annealing stages, measured on an Intel Core Ultra 5 225F with ten cores and no GPU. BK-MBD returned at a median of 11.0&nbsp;ms with a worst case of 14.7&nbsp;ms and missed no deadline over all 50 trials, while the oracle took a median of 2598&nbsp;ms and overran the 50&nbsp;ms period at every one of its 1200 control steps. A bilinear step issues <em>m</em>+1 = 8 matrix&ndash;vector products where the linear form issues one, yet costs 11.0&nbsp;ms against 7.6&nbsp;ms &mdash; less than a factor of 1.5, since those products share the lifted state they multiply.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Experiments: annealed schedule ===================== -->
+    <section class="section is-light">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">The Contribution of the Annealed Schedule</h2>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Varying the noise schedule alone over the bilinear model settles where the advantage of annealing comes from. All five schedules share one total budget of <em>NS</em> candidates per control step, written as stages &times; candidates per stage. The single-stage conditions are the MPPI update at the same budget. The reaching task places no obstacle between start and goal, so the true cost is not multimodal and what annealing gains cannot come from multimodality.</p>
+            </div>
+
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">Noise schedules at an equal total sample budget</caption>
+                <thead>
+                  <tr><th>Schedule</th><th>Reach 1&nbsp;cm &uarr;</th><th>Median final error [m] &darr;</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1 &times; NS wide (MPPI)</td><td>33/50</td><td>0.010</td></tr>
+                  <tr><td>1 &times; NS narrow (MPPI)</td><td>15/50</td><td>0.041</td></tr>
+                  <tr><td>S &times; N wide</td><td>46/50</td><td>0.012</td></tr>
+                  <tr><td>S &times; N narrow</td><td>26/50</td><td>0.045</td></tr>
+                  <tr><td><b>S &times; N anneal (ours)</b></td><td><b>50/50</b></td><td><b>0.0097</b></td></tr>
+                  <tr class="has-background-white-ter"><td>S &times; N narrow <em>(oracle rollout)</em></td><td>10/10</td><td>0.009</td></tr>
+                  <tr class="has-background-white-ter"><td>S &times; N anneal <em>(oracle rollout)</em></td><td>10/10</td><td>0.007</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>The annealed schedule gains 17 and 35 goals over the single-stage wide and narrow MPPI conditions, and 4 and 24 over the conditions that repeat the same level <em>S</em> times, so neither the sample budget nor the mere use of several serial stages accounts for the result. Repeating the two schedules on the <em>true-dynamics</em> rollout removes the separation entirely: the narrow schedule reaches 10/10 as the annealed one does, against 26/50 under the learned rollout, and its settled error moves from 0.045 to 0.009&nbsp;m. The benefit of annealing is therefore tied to surrogate error, not to the sampler's ability to refine a plan.</p>
+            </div>
+
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">Step size and step quality at a fixed noise level</caption>
+                <thead>
+                  <tr><th>&sigma;</th><th>Displacement |&Delta;U|</th><th>Error removed</th><th>Efficiency (&times;10<sup>3</sup>) &uarr;</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>0.3</td><td>0.109</td><td><b>0.00665</b></td><td><b>61.7</b></td></tr>
+                  <tr><td>0.8</td><td>0.292</td><td>0.00571</td><td>19.2</td></tr>
+                  <tr><td>1.2</td><td>0.418</td><td>0.00409</td><td>9.9</td></tr>
+                  <tr><td><b>anneal</b></td><td>0.109</td><td>0.00525</td><td>48.4</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Efficiency is the tracking error removed per unit displacement. From &sigma; = 0.3 to &sigma; = 1.2 the displacement grows by a factor of 3.8 while the efficiency drops by a factor of six. The annealed schedule executes at the displacement of the narrow level, 0.109, and retains an efficiency of 48.4 against the 9.9 of the wide level: the final stage produces the executed step, while the preceding wider stages have already exposed the iterate to a broader neighborhood of the current plan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Experiments: non-convex passage ===================== -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Non-Convex Passage</h2>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Exchanging the optimizer alone settles whether the structure of the free space is what separates them. A single circular aperture in a wall is the only route to the goals on the far side, and the straight chord to any goal crosses the wall below the opening. The drone flies 50 trials, and both planners receive the same trained bilinear model. BK-MBD takes the wall as a cost penalty, while the convexified controller relinearizes the keep-out set into one convex region per step and solves the resulting quadratic program over four iterations along the nominal rollout.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered">
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure3_a.png" alt="BK-MBD threads the circular aperture in the wall and reaches the far-side goal" loading="lazy" style="width: 100%; height: auto;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;">
+                <b>(a) BK-MBD (ours).</b> Threads the aperture and reaches the far-side goal.
+              </figcaption>
+            </figure>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure3_b.png" alt="The convexified bilinear QP-MPC stops on the near side of the wall without passing through the aperture" loading="lazy" style="width: 100%; height: auto;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;">
+                <b>(b) Convexified bilinear QP-MPC.</b> Holds the near side of the wall.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- VIDEO SLOT (drone passage): drop static/videos/drone_passage.mp4 in place and uncomment.
+        <div class="columns is-centered">
+          <div class="column is-full has-text-centered">
+            <video id="video-drone-passage" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
+              <source src="static/videos/drone_passage.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        -->
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>BK-MBD reached the 1&nbsp;cm tolerance on <b>50/50</b> goals and the convexified controller on <b>10/50</b>, and BK-MBD executed no constraint violation although it treats the wall as a penalty alone. Any convex region that excludes the wall lies entirely on the near side, so the far-side goal is infeasible at every step and the solve converges to the point of that region closest to the goal. The convexified controller settled a median of 0.030&nbsp;m from the wall &mdash; the margin of its own keep-out set &mdash; and the ten goals it reached were those closest to the aperture axis, at most 0.148&nbsp;m against a median of 0.291&nbsp;m.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Experiments: physical robot ===================== -->
+    <section class="section is-light">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Validation on the Physical Robot</h2>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Five methods track a target moving along a circle on the physical FR3 under the same CPU budget. The target traverses a circle of radius 0.10&nbsp;m and period 16&nbsp;s in the <em>yz</em> plane, and the trajectory is <b>not given in advance</b>, so the controller sees only the target position at each control step. Each trial runs for 35&nbsp;s &mdash; a 3&nbsp;s lead-in followed by two revolutions &mdash; and a guard commands zero velocity and ends the trial when the Cartesian tracking error exceeds 80&nbsp;mm for 0.25&nbsp;s. Each rollout class is run ten times, over planner seeds 0 to 9.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEO SLOT (hardware): drop static/videos/hw_bkmbd.mp4 and hw_dkmbd.mp4 in place and uncomment.
+        <div class="columns is-centered">
+          <div class="column is-half has-text-centered">
+            <video id="video-hw-bkmbd" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
+              <source src="static/videos/hw_bkmbd.mp4" type="video/mp4">
+            </video>
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.6;">
+              <b>BK-MBD (ours).</b> Completes both revolutions inside the 50 ms control period.
+            </p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <video id="video-hw-dkmbd" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
+              <source src="static/videos/hw_dkmbd.mp4" type="video/mp4">
+            </video>
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.6;">
+              <b>DK-MBD.</b> The state-independent input gain loses the target and triggers the guard stop.
+            </p>
+          </div>
+        </div>
+        -->
+
+        <div class="columns is-centered is-multiline">
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure4_a.jpg" alt="FR3 postures over one revolution under BK-MBD, executed tool path traced in red, completing the circle" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(a) BK-MBD (ours).</b> Completes the revolution.</figcaption>
+            </figure>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure4_b.jpg" alt="FR3 postures under DK-MBD, from the start of the command to the guard stop" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(b) DK-MBD.</b> From the start of the command to the guard stop.</figcaption>
+            </figure>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure4_c.jpg" alt="FR3 postures under DK-MBD-split over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(c) DK-MBD-split.</b></figcaption>
+            </figure>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/figure4_d.jpg" alt="FR3 postures under BK-MPPI over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(d) BK-MPPI.</b></figcaption>
+            </figure>
+          </div>
+          <div class="column is-full">
+            <p class="content has-text-centered" style="line-height: 1.55;">
+              Circular tracking on the physical FR3, with postures sampled at equal intervals over one revolution and the executed tool path traced in red.
+            </p>
+          </div>
+        </div>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">Circular tracking on the physical FR3 over ten planner seeds</caption>
+                <thead>
+                  <tr><th>Method</th><th>Full run &uarr;</th><th>RMSE [mm] &darr;</th><th>Median / worst latency [ms] &darr;</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><b>BK-MBD (ours)</b></td><td><b>10/10</b></td><td>7.09 &plusmn; 0.12</td><td><b>22.9 / 44.7</b></td></tr>
+                  <tr><td>DK-MBD</td><td>0/10</td><td>39.75 &plusmn; 0.67</td><td>10.9 / 23.4</td></tr>
+                  <tr><td>DK-MBD-split</td><td><b>10/10</b></td><td><b>4.97 &plusmn; 0.09</b></td><td>28.6 / <span style="color:#c0392b;">83.0</span></td></tr>
+                  <tr><td>BK-MPPI</td><td>8/10</td><td>15.76 &plusmn; 5.23</td><td>17.0 / 53.1</td></tr>
+                  <tr><td>MBD-true</td><td>0/10</td><td>41.22 &plusmn; 0.07</td><td><span style="color:#c0392b;">1617 / 1762</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>Only BK-MBD and DK-MBD-split completed all ten trials. DK-MBD triggered a guard stop in every trial, BK-MPPI completed eight and exceeded the tracking-error guard in the remaining two, and MBD-true issued no nonzero command because its planning latency exceeded the control period. BK-MBD returned at a median of 22.9&nbsp;ms with a worst case of 44.7&nbsp;ms and stayed within the 50&nbsp;ms period over all ten trials, whereas DK-MBD-split overran it at 83.0&nbsp;ms &mdash; so <b>BK-MBD is the only method here that met both the tracking task and the deadline</b>.</p>
+            </div>
+
+            <figure class="image has-text-centered" style="margin: 2rem 0 1.5rem;">
+              <img src="static/images/figure5.png" alt="Signed TCP tracking error per axis on the physical FR3, mean over ten planner seeds with one standard deviation, with a dotted line marking the guard stop" loading="lazy" style="width: 100%; height: auto;">
+              <figcaption class="content is-size-5" style="margin-top: 0.85rem; line-height: 1.55;">
+                <b>Signed TCP tracking error per axis.</b> Mean over ten planner seeds with one standard deviation. The dotted line marks the guard stop.
+              </figcaption>
+            </figure>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>The failure of DK-MBD lies in the representation and that of MBD-true in the computation. The state-independent input derivative of DK-MBD represents only the mean input effect over the training distribution, as reflected by the axis errors above and its directional cosine of 0.318, against 0.914 for BK-MBD. The contrasting outcomes of BK-MBD and BK-MPPI under the <em>same</em> BK rollout show that the benefit of the annealed schedule persists on the physical robot: rolling the settled plans of the completed BK-MPPI trials through the model and the robot gave terminal errors of 8.90 &plusmn; 2.08&nbsp;mm and 19.25 &plusmn; 8.21&nbsp;mm respectively, with the robot error larger in all but one trial.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Implementation settings ===================== -->
+    <section class="section" id="settings">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Implementation Settings</h2>
+
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>The manipulator carries the rollout-class, annealing and hardware experiments; the drone carries the non-convex passage. The FR3 accepts joint velocities through a gravity-compensated servo and is observed as [q, p<sub>tcp</sub>], with the manipulator Jacobian as its input gain. The drone accepts body-frame linear velocities and a yaw rate and is observed as [p, sin&psi;, cos&psi;], with the yaw rotation as its input gain.</p>
+            </div>
+
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+                <caption class="is-sr-only">Implementation settings</caption>
+                <thead>
+                  <tr><th>Setting</th><th>Manipulator</th><th>Drone</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Control period &Delta;t</td><td>50&nbsp;ms</td><td>50&nbsp;ms</td></tr>
+                  <tr><td>Budget per trial</td><td>120 steps</td><td>120 steps</td></tr>
+                  <tr><td>Candidates N, stages S</td><td>800, 5</td><td>800, 5</td></tr>
+                  <tr><td>Horizon T</td><td>15</td><td>25</td></tr>
+                  <tr><td>Noise &sigma;</td><td>1.2 &rarr; 0.3</td><td>1.6 &rarr; 0.3</td></tr>
+                  <tr><td>Temperature &alpha;</td><td>0.4</td><td>0.5</td></tr>
+                  <tr><td>Lift dimension r</td><td>20</td><td>13</td></tr>
+                  <tr><td>Fixed feature map &tau;</td><td>[sin q, cos q]</td><td>identity</td></tr>
+                  <tr><td>Training snippets, T steps each</td><td>6000</td><td>4000</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content has-text-justified" style="line-height: 1.7;">
+              <p>All timings are measured on an Intel Core Ultra 5 225F with ten cores and no GPU. In the reaching experiments each trial starts from rest and drives the tracked output toward a goal over the fixed budget above, without early termination. A trial reaches a tolerance at the first control step whose tracking error falls below it. The reaching experiments cross 5 training seeds, each with its own dataset, with 10 goals for 50 trials per condition, and the trials are paired across conditions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BibTeX ===================== -->
+    <section class="section is-light" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@inproceedings{anonymous2026bkmbd,
+  title={Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control},
+  author={Anonymous Authors},
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
+  note={Submitted},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- ===================== Footer ===================== -->
+    <footer class="footer">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content has-text-centered">
+              <p>
+                This website is licensed under a
+                <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+              </p>
+              <p>
+                This page was built on the
+                <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>,
+                which itself borrows from <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>
