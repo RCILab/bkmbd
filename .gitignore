@@ -1,0 +1,8 @@
+# 4K source recordings (hundreds of MB each) stay local; only the web crops are committed
+static/videos/bk.MP4
+static/videos/bk_mppi.MP4
+static/videos/dk.MP4
+static/videos/dk_split.MP4
+
+# probe frames written by tools/align_videos.py
+tools/_probe/

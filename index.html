@@ -18,24 +18,32 @@
          a Code button back if the implementation is released.
 
        Assets present in static/:
-       - static/images/figure1.png     (one control step of BK-MBD, teaser)
-       - static/images/figure2.png     (executed tool paths, five rollout models)
-       - static/images/figure3_a.png   (non-convex passage, BK-MBD)
-       - static/images/figure3_b.png   (non-convex passage, convexified QP-MPC)
-       - static/images/figure4_a.jpg   (FR3 circular tracking, BK-MBD)
-       - static/images/figure4_b.jpg   (FR3 circular tracking, DK-MBD)
-       - static/images/figure4_c.jpg   (FR3 circular tracking, DK-MBD-split)
-       - static/images/figure4_d.jpg   (FR3 circular tracking, BK-MPPI)
-       - static/images/figure5.png     (signed TCP tracking error per axis)
+       - static/images/figure1.png       (one control step of BK-MBD, teaser)
+       - static/images/figure2.png       (executed tool paths, five rollout models)
+       - static/images/figure3_a.png     (non-convex passage, BK-MBD; still, kept but no longer shown)
+       - static/images/figure3_b.png     (non-convex passage, convexified QP-MPC; still, kept but no longer shown)
+       - static/images/figure4_a.jpg     (FR3 circular tracking, BK-MBD)
+       - static/images/figure4_b.jpg     (FR3 circular tracking, DK-MBD)
+       - static/images/figure4_c.jpg     (FR3 circular tracking, DK-MBD-split)
+       - static/images/figure4_d.jpg     (FR3 circular tracking, BK-MPPI)
+       - static/images/figure5.png       (signed TCP tracking error per axis)
+       - static/images/hw_*_poster.jpg   (poster frames for the four hardware clips)
        - static/pdfs/bkmbd_paper.pdf
        (no favicon file: the tab icon is deliberately blank, see below)
 
-       VIDEO SLOTS (markup is written and commented out below; drop the file in
-       and uncomment the matching block):
-       - static/videos/overview.mp4        -> "Overview" section
-       - static/videos/drone_passage.mp4   -> "Non-Convex Passage" section
-       - static/videos/hw_bkmbd.mp4        -> "Validation on the Physical Robot", left cell
-       - static/videos/hw_dkmbd.mp4        -> "Validation on the Physical Robot", right cell
+       VIDEOS IN USE:
+       - static/videos/drone_window_bk.mp4  -> "Non-Convex Passage", left cell (autoplays, loops)
+       - static/videos/drone_window_qp.mp4  -> "Non-Convex Passage", right cell (autoplays, loops)
+       - static/videos/bk_crop.mp4          -> "Validation on the Physical Robot", (a) BK-MBD
+       - static/videos/dk_crop.mp4          -> ditto, (b) DK-MBD
+       - static/videos/dk_split_crop.mp4    -> ditto, (c) DK-MBD-split
+       - static/videos/bk_mppi_crop.mp4     -> ditto, (d) BK-MPPI
+       The four hardware clips are 1280x720 30 fps encodes of a crop of the 4K
+       originals (*.MP4 in the same folder, git-ignored), cropped so the robot
+       has the same size in each.
+
+       VIDEO SLOT still empty (markup written and commented out below):
+       - static/videos/overview.mp4         -> "Overview" section
        ============================================================= -->
 
   <meta name="title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
@@ -401,32 +409,30 @@
 
         <div class="columns is-centered">
           <div class="column is-half has-text-centered">
-            <figure class="image">
-              <img src="static/images/figure3_a.png" alt="BK-MBD threads the circular aperture in the wall and reaches the far-side goal" loading="lazy" style="width: 100%; height: auto;">
+            <figure class="image" style="margin: 0;">
+              <video id="video-drone-bkmbd" controls autoplay muted loop playsinline preload="auto"
+                     aria-label="BK-MBD flies the drone through the circular aperture in the wall and reaches the far-side goal"
+                     style="width: 100%; height: auto; border-radius: 6px;">
+                <source src="static/videos/drone_window_bk.mp4" type="video/mp4">
+              </video>
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;">
                 <b>(a) BK-MBD (ours).</b> Threads the aperture and reaches the far-side goal.
               </figcaption>
             </figure>
           </div>
           <div class="column is-half has-text-centered">
-            <figure class="image">
-              <img src="static/images/figure3_b.png" alt="The convexified bilinear QP-MPC stops on the near side of the wall without passing through the aperture" loading="lazy" style="width: 100%; height: auto;">
+            <figure class="image" style="margin: 0;">
+              <video id="video-drone-qpmpc" controls autoplay muted loop playsinline preload="auto"
+                     aria-label="The convexified bilinear QP-MPC holds the near side of the wall without passing through the aperture"
+                     style="width: 100%; height: auto; border-radius: 6px;">
+                <source src="static/videos/drone_window_qp.mp4" type="video/mp4">
+              </video>
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;">
                 <b>(b) Convexified bilinear QP-MPC.</b> Holds the near side of the wall.
               </figcaption>
             </figure>
           </div>
         </div>
-
-        <!-- VIDEO SLOT (drone passage): drop static/videos/drone_passage.mp4 in place and uncomment.
-        <div class="columns is-centered">
-          <div class="column is-full has-text-centered">
-            <video id="video-drone-passage" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
-              <source src="static/videos/drone_passage.mp4" type="video/mp4">
-            </video>
-          </div>
-        </div>
-        -->
 
         <div class="columns is-centered">
           <div class="column is-full">
@@ -451,26 +457,53 @@
           </div>
         </div>
 
-        <!-- VIDEO SLOT (hardware): drop static/videos/hw_bkmbd.mp4 and hw_dkmbd.mp4 in place and uncomment.
-        <div class="columns is-centered">
+        <h3 class="title is-5 has-text-centered" style="margin-bottom: 1rem;">Recorded runs</h3>
+
+        <div class="columns is-centered is-multiline">
           <div class="column is-half has-text-centered">
-            <video id="video-hw-bkmbd" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
-              <source src="static/videos/hw_bkmbd.mp4" type="video/mp4">
+            <video id="video-hw-bkmbd" controls muted loop playsinline preload="metadata"
+                   poster="static/images/hw_bk_poster.jpg"
+                   aria-label="Recorded run of BK-MBD on the physical FR3, tracking the circular target for the whole run"
+                   style="width: 100%; height: auto; border-radius: 6px;">
+              <source src="static/videos/bk_crop.mp4" type="video/mp4">
             </video>
-            <p class="content" style="margin-top: 0.5rem; line-height: 1.6;">
-              <b>BK-MBD (ours).</b> Completes both revolutions inside the 50 ms control period.
-            </p>
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(a) BK-MBD (ours).</b> Tracks the circle for the whole run, inside the 50&nbsp;ms control period.</p>
           </div>
           <div class="column is-half has-text-centered">
-            <video id="video-hw-dkmbd" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
-              <source src="static/videos/hw_dkmbd.mp4" type="video/mp4">
+            <video id="video-hw-dkmbd" controls muted loop playsinline preload="metadata"
+                   poster="static/images/hw_dk_poster.jpg"
+                   aria-label="Recorded run of DK-MBD on the physical FR3, losing the target until the guard stops the trial"
+                   style="width: 100%; height: auto; border-radius: 6px;">
+              <source src="static/videos/dk_crop.mp4" type="video/mp4">
             </video>
-            <p class="content" style="margin-top: 0.5rem; line-height: 1.6;">
-              <b>DK-MBD.</b> The state-independent input gain loses the target and triggers the guard stop.
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(b) DK-MBD.</b> The state-independent input gain loses the target and the guard stops the trial.</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <video id="video-hw-dksplit" controls muted loop playsinline preload="metadata"
+                   poster="static/images/hw_dksplit_poster.jpg"
+                   aria-label="Recorded run of DK-MBD-split on the physical FR3, tracking the circular target"
+                   style="width: 100%; height: auto; border-radius: 6px;">
+              <source src="static/videos/dk_split_crop.mp4" type="video/mp4">
+            </video>
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(c) DK-MBD-split.</b> Tracks the circle, but its worst-case latency overruns the control period.</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <video id="video-hw-bkmppi" controls muted loop playsinline preload="metadata"
+                   poster="static/images/hw_bkmppi_poster.jpg"
+                   aria-label="Recorded run of BK-MPPI on the physical FR3, tracking the circular target with a larger error"
+                   style="width: 100%; height: auto; border-radius: 6px;">
+              <source src="static/videos/bk_mppi_crop.mp4" type="video/mp4">
+            </video>
+            <p class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(d) BK-MPPI.</b> The same BK rollout without the annealed schedule, at a larger tracking error.</p>
+          </div>
+          <div class="column is-full">
+            <p class="content has-text-centered" style="line-height: 1.55;">
+              Recorded runs on the physical FR3. The four clips are cropped to a common field of view, so the robot appears at the same scale in each.
             </p>
           </div>
         </div>
-        -->
+
+        <h3 class="title is-5 has-text-centered" style="margin-bottom: 1rem;">Postures over one revolution</h3>
 
         <div class="columns is-centered is-multiline">
           <div class="column is-half has-text-centered">
