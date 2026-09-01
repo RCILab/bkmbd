@@ -26,6 +26,8 @@
        - static/images/figure4_b.jpg     (FR3 circular tracking, DK-MBD)
        - static/images/figure4_c.jpg     (FR3 circular tracking, DK-MBD-split)
        - static/images/figure4_d.jpg     (FR3 circular tracking, BK-MPPI)
+         (the four figure4 URLs carry ?v=N; bump N whenever the file changes, so
+          a CDN edge cache cannot keep serving the previous image)
        - static/images/figure5.png       (signed TCP tracking error per axis)
        - static/images/hw_*_poster.jpg   (poster frames for the four hardware clips)
        - static/pdfs/bkmbd_paper.pdf
@@ -508,25 +510,25 @@
         <div class="columns is-centered is-multiline">
           <div class="column is-half has-text-centered">
             <figure class="image">
-              <img src="static/images/figure4_a.jpg" alt="FR3 postures over one revolution under BK-MBD, executed tool path traced in red, completing the circle" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <img src="static/images/figure4_a.jpg?v=3" alt="FR3 postures over one revolution under BK-MBD, executed tool path traced in red, completing the circle" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(a) BK-MBD (ours).</b> Completes the revolution.</figcaption>
             </figure>
           </div>
           <div class="column is-half has-text-centered">
             <figure class="image">
-              <img src="static/images/figure4_b.jpg" alt="FR3 postures under DK-MBD, from the start of the command to the guard stop" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <img src="static/images/figure4_b.jpg?v=3" alt="FR3 postures under DK-MBD, from the start of the command to the guard stop" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(b) DK-MBD.</b> From the start of the command to the guard stop.</figcaption>
             </figure>
           </div>
           <div class="column is-half has-text-centered">
             <figure class="image">
-              <img src="static/images/figure4_c.jpg" alt="FR3 postures under DK-MBD-split over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <img src="static/images/figure4_c.jpg?v=3" alt="FR3 postures under DK-MBD-split over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(c) DK-MBD-split.</b></figcaption>
             </figure>
           </div>
           <div class="column is-half has-text-centered">
             <figure class="image">
-              <img src="static/images/figure4_d.jpg" alt="FR3 postures under BK-MPPI over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
+              <img src="static/images/figure4_d.jpg?v=3" alt="FR3 postures under BK-MPPI over one revolution" loading="lazy" style="width: 100%; height: auto; border-radius: 6px;">
               <figcaption class="content" style="margin-top: 0.5rem; line-height: 1.55;"><b>(d) BK-MPPI.</b></figcaption>
             </figure>
           </div>
