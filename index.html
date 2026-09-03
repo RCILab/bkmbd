@@ -22,12 +22,7 @@
        - static/images/figure2.png       (executed tool paths, five rollout models)
        - static/images/figure3_a.png     (non-convex passage, BK-MBD; still, kept but no longer shown)
        - static/images/figure3_b.png     (non-convex passage, convexified QP-MPC; still, kept but no longer shown)
-       - static/images/figure4_a.jpg     (FR3 circular tracking, BK-MBD)
-       - static/images/figure4_b.jpg     (FR3 circular tracking, DK-MBD)
-       - static/images/figure4_c.jpg     (FR3 circular tracking, DK-MBD-split)
-       - static/images/figure4_d.jpg     (FR3 circular tracking, BK-MPPI)
-         (the four figure4 URLs carry ?v=N; bump N whenever the file changes, so
-          a CDN edge cache cannot keep serving the previous image)
+       - static/images/figure4_[a-d].jpg (FR3 circular tracking comparisons)
        - static/images/figure5.png       (signed TCP tracking error per axis)
        - static/images/hw_*_poster.jpg   (poster frames for the four hardware clips)
        - static/pdfs/bkmbd_paper.pdf
@@ -132,7 +127,7 @@
     "url": "https://rcilab.khu.ac.kr/bkmbd/",
     "image": "https://rcilab.khu.ac.kr/bkmbd/static/images/figure1.png",
     "keywords": ["Koopman operator", "model-based diffusion", "sampling-based control", "bilinear model", "data-driven control", "real-time robot control"],
-    "abstract": "Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, limits its applicability to offline settings. To address this limitation, this paper proposes Bilinear Koopman Model-Based Diffusion (BK-MBD). The proposed method lifts the robot state into a high-dimensional space only once per control step and propagates all candidates in the lifted space thereafter, so each rollout reduces to a fixed number of matrix-vector multiplications. The lift is bilinear so that the input gain varies with the robot configuration, which a linear lift cannot represent.",
+    "abstract": "Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, has largely confined its use to offline settings. This paper proposes Bilinear Koopman Model-Based Diffusion (BK-MBD), which lifts the robot state once per control step and propagates all candidates in a bilinear lifted space. The predicted input gain can therefore vary with configuration, unlike a linear lifted model. Annealing improves closed-loop accuracy over fixed-noise schedules under the learned rollout, while the separation disappears under the exact rollout, indicating reduced sensitivity to surrogate-model error.",
     "citation": "@inproceedings{anonymous2027bkmbd, title={Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control}, author={Anonymous Authors}, booktitle={IEEE International Conference on Robotics and Automation (ICRA)}, note={Submitted}, year={2027}}",
     "isAccessibleForFree": true,
     "license": "https://creativecommons.org/licenses/by/4.0/"
@@ -213,7 +208,7 @@
           <div class="column is-full">
             <h2 class="title is-3">Abstract</h2>
             <div class="content has-text-justified">
-              <p>Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, limits its applicability to offline settings. To address this limitation, this paper proposes <b>Bilinear Koopman Model-Based Diffusion (BK-MBD)</b>. The proposed method lifts the robot's state into a high-dimensional space only once per control step and propagates all candidates in the lifted space thereafter, so each rollout reduces to a fixed number of matrix&ndash;vector multiplications. The lift is bilinear so that the input gain varies with the robot's configuration, which a linear lift cannot represent. In simulation, BK-MBD planned in a maximum of 14.7&nbsp;ms within a 50&nbsp;ms control period and reached the goal on every trial, where a linear lift almost never did. The annealed schedule improves closed-loop accuracy under the learned rollout, and BK-MBD threaded a passage no single convex region covers, where a convexified bilinear controller rarely succeeded. On a physical manipulator, BK-MBD tracked an initially unknown moving target within the control period and was the only method that met both the tracking task and the deadline.</p>
+              <p>Conventional Model-Based Diffusion (MBD) achieves effective trajectory optimization by leveraging noise annealing. However, its high computational cost, primarily arising from repeated rollouts of the plant dynamics, has largely confined its use to offline settings. To address this limitation, this paper proposes <b>Bilinear Koopman Model-Based Diffusion (BK-MBD)</b>. The proposed method lifts the robot's state into a high-dimensional space only once per control step and propagates all candidates in the lifted space thereafter, so each rollout reduces to a fixed number of matrix&ndash;vector multiplications. The lifted dynamics are bilinear, allowing the predicted input gain to vary with the robot's configuration, which a linear lifted model cannot represent. In simulation, BK-MBD completed each planning update in at most 14.7&nbsp;ms within a 50&nbsp;ms control period and reached the goal on every trial, whereas a linear lift almost never did. The annealed schedule improves closed-loop accuracy over fixed-noise schedules under the learned rollout. Under the exact rollout, both the annealed and fixed-narrow schedules reach every goal, indicating that annealing reduces sensitivity to surrogate-model error. BK-MBD also threaded a passage that no single convex region covers, whereas a convexified bilinear controller rarely succeeded. On a physical manipulator, BK-MBD tracked an initially unknown moving target within the control period and was the only method that met both the tracking task and the deadline.</p>
             </div>
           </div>
         </div>
@@ -302,7 +297,7 @@
                   <tr><td>DK-MBD-large</td><td>constant matrix, larger lift</td><td>11/50</td><td>1/50</td></tr>
                   <tr><td>MLP-MBD</td><td>unstructured, state-dependent</td><td>41/50</td><td>0/50</td></tr>
                   <tr><td>DK-MBD-split</td><td>analytic forward kinematics</td><td>50/50</td><td>50/50</td></tr>
-                  <tr><td><b>BK-MBD (ours)</b></td><td>bilinear, state-dependent</td><td><b>50/50</b></td><td><b>50/50</b></td></tr>
+                  <tr><td><b>BK-MBD (ours)</b></td><td>bilinear, state-dependent</td><td>50/50</td><td>50/50</td></tr>
                 </tbody>
               </table>
             </div>
@@ -326,8 +321,8 @@
                 </thead>
                 <tbody>
                   <tr><td>MBD-true <em>(oracle)</em></td><td>2598</td><td>2745</td><td>1200</td></tr>
-                  <tr><td>DK-MBD</td><td><b>7.6</b></td><td><b>12.5</b></td><td><b>0</b></td></tr>
-                  <tr><td><b>BK-MBD (ours)</b></td><td>11.0</td><td>14.7</td><td><b>0</b></td></tr>
+                  <tr><td>DK-MBD</td><td>7.6</td><td>12.5</td><td>0</td></tr>
+                  <tr><td><b>BK-MBD (ours)</b></td><td>11.0</td><td>14.7</td><td>0</td></tr>
                 </tbody>
               </table>
             </div>
@@ -362,7 +357,7 @@
                   <tr><td>1 &times; NS narrow (MPPI)</td><td>15/50</td><td>0.041</td></tr>
                   <tr><td>S &times; N wide</td><td>46/50</td><td>0.012</td></tr>
                   <tr><td>S &times; N narrow</td><td>26/50</td><td>0.045</td></tr>
-                  <tr><td><b>S &times; N anneal (ours)</b></td><td><b>50/50</b></td><td><b>0.0097</b></td></tr>
+                  <tr><td><b>S &times; N anneal (ours)</b></td><td>50/50</td><td>0.0097</td></tr>
                   <tr class="has-background-white-ter"><td>S &times; N narrow <em>(oracle rollout)</em></td><td>10/10</td><td>0.009</td></tr>
                   <tr class="has-background-white-ter"><td>S &times; N anneal <em>(oracle rollout)</em></td><td>10/10</td><td>0.007</td></tr>
                 </tbody>
@@ -380,7 +375,7 @@
                   <tr><th>&sigma;</th><th>Displacement |&Delta;U|</th><th>Error removed</th><th>Efficiency (&times;10<sup>3</sup>) &uarr;</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>0.3</td><td>0.109</td><td><b>0.00665</b></td><td><b>61.7</b></td></tr>
+                  <tr><td>0.3</td><td>0.109</td><td>0.00665</td><td>61.7</td></tr>
                   <tr><td>0.8</td><td>0.292</td><td>0.00571</td><td>19.2</td></tr>
                   <tr><td>1.2</td><td>0.418</td><td>0.00409</td><td>9.9</td></tr>
                   <tr><td><b>anneal</b></td><td>0.109</td><td>0.00525</td><td>48.4</td></tr>
@@ -548,9 +543,9 @@
                   <tr><th>Method</th><th>Full run &uarr;</th><th>RMSE [mm] &darr;</th><th>Median / worst latency [ms] &darr;</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td><b>BK-MBD (ours)</b></td><td><b>10/10</b></td><td>7.09 &plusmn; 0.12</td><td><b>22.9 / 44.7</b></td></tr>
+                  <tr><td><b>BK-MBD (ours)</b></td><td>10/10</td><td>7.09 &plusmn; 0.12</td><td>22.9 / 44.7</td></tr>
                   <tr><td>DK-MBD</td><td>0/10</td><td>39.75 &plusmn; 0.67</td><td>10.9 / 23.4</td></tr>
-                  <tr><td>DK-MBD-split</td><td><b>10/10</b></td><td><b>4.97 &plusmn; 0.09</b></td><td>28.6 / <span style="color:#c0392b;">83.0</span></td></tr>
+                  <tr><td>DK-MBD-split</td><td>10/10</td><td>4.97 &plusmn; 0.09</td><td>28.6 / <span style="color:#c0392b;">83.0</span></td></tr>
                   <tr><td>BK-MPPI</td><td>8/10</td><td>15.76 &plusmn; 5.23</td><td>17.0 / 53.1</td></tr>
                   <tr><td>MBD-true</td><td>0/10</td><td>41.22 &plusmn; 0.07</td><td><span style="color:#c0392b;">1617 / 1762</span></td></tr>
                 </tbody>
@@ -569,7 +564,7 @@
             </figure>
 
             <div class="content has-text-justified" style="line-height: 1.7;">
-              <p>The failure of DK-MBD lies in the representation and that of MBD-true in the computation. The state-independent input derivative of DK-MBD represents only the mean input effect over the training distribution, as reflected by the axis errors above and its directional cosine of 0.318, against 0.914 for BK-MBD. The contrasting outcomes of BK-MBD and BK-MPPI under the <em>same</em> BK rollout show that the benefit of the annealed schedule persists on the physical robot: rolling the settled plans of the completed BK-MPPI trials through the model and the robot gave terminal errors of 8.90 &plusmn; 2.08&nbsp;mm and 19.25 &plusmn; 8.21&nbsp;mm respectively, with the robot error larger in all but one trial.</p>
+              <p>The failure of DK-MBD lies in the representation and that of MBD-true in the computation. The state-independent input derivative of DK-MBD represents only the mean input effect over the training distribution, as reflected by the axis errors above and its directional cosine of 0.318, against 0.914 for BK-MBD. The successful tracking of DK-MBD-split corroborates the representation limit identified in simulation. Likewise, the contrasting closed-loop outcomes of BK-MBD and BK-MPPI under the <em>same</em> BK rollout show that the benefit of the annealed schedule persists on the physical robot: rolling the settled plans of the completed BK-MPPI trials through the model and the robot gave terminal errors of 8.90 &plusmn; 2.08&nbsp;mm and 19.25 &plusmn; 8.21&nbsp;mm respectively, with the robot error larger in all but one trial. Because this discrepancy belongs to the learned BK rollout shared by both planners rather than to MPPI itself, the result supports the earlier conclusion that the annealed schedule is less sensitive to surrogate error than a single-stage narrow update.</p>
             </div>
           </div>
         </div>
@@ -611,6 +606,16 @@
               <p>All timings are measured on an Intel Core Ultra 5 225F with ten cores and no GPU. In the reaching experiments each trial starts from rest and drives the tracked output toward a goal over the fixed budget above, without early termination. A trial reaches a tolerance at the first control step whose tracking error falls below it. The reaching experiments cross 5 training seeds, each with its own dataset, with 10 goals for 50 trials per condition, and the trials are paired across conditions.</p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Conclusion ===================== -->
+    <section class="section is-light">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Conclusion</h2>
+        <div class="content has-text-justified" style="line-height: 1.7;">
+          <p>BK-MBD runs the annealed sampling of MBD at the control rate by performing every rollout with a bilinear Koopman model identified from interaction data. The simulation experiments separate the effects of the rollout input gain, the noise schedule under a learned rollout, and the structure of the free space. On a physical manipulator, BK-MBD tracked a moving target and met the control deadline at every step; no other method did both. All tasks here are contact-free, so extending this substitution to contact-rich settings remains future work.</p>
         </div>
       </div>
     </section>
