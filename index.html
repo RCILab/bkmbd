@@ -35,12 +35,11 @@
        - static/videos/dk_crop.mp4          -> ditto, (b) DK-MBD
        - static/videos/dk_split_crop.mp4    -> ditto, (c) DK-MBD-split
        - static/videos/bk_mppi_crop.mp4     -> ditto, (d) BK-MPPI
+       - static/videos/overview.mp4         -> "Video" section, between the hero
+                                               Paper button and "Overview"
        The four hardware clips are 1280x720 30 fps encodes of a crop of the 4K
        originals (*.MP4 in the same folder, git-ignored), cropped so the robot
        has the same size in each.
-
-       VIDEO SLOT still empty (markup written and commented out below):
-       - static/videos/overview.mp4         -> "Overview" section
        ============================================================= -->
 
   <meta name="title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
@@ -177,7 +176,21 @@
       </div>
     </section>
 
-    <!-- ===================== Overview (teaser figure + video slot) ===================== -->
+    <!-- ===================== Video ===================== -->
+    <section class="hero teaser">
+      <div class="container is-fluid" style="width: min(96vw, 1280px); max-width: 1280px;">
+        <div class="hero-body" style="padding-left: 0; padding-right: 0;">
+          <div class="has-text-centered">
+            <video id="overview-video" controls muted loop playsinline preload="metadata"
+                   style="width: 100%; height: auto; border-radius: 10px;">
+              <source src="static/videos/overview.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Overview (teaser figure) ===================== -->
     <section class="hero teaser">
       <div class="container is-fluid" style="width: min(96vw, 1280px); max-width: 1280px;">
         <div class="hero-body" style="padding-left: 0; padding-right: 0;">
@@ -190,13 +203,6 @@
             </figcaption>
           </figure>
 
-          <!-- VIDEO SLOT (overview): drop static/videos/overview.mp4 in place and uncomment.
-          <div class="has-text-centered" style="margin-top: 2rem;">
-            <video id="overview-video" controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 10px;">
-              <source src="static/videos/overview.mp4" type="video/mp4">
-            </video>
-          </div>
-          -->
         </div>
       </div>
     </section>
