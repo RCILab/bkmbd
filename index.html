@@ -25,7 +25,8 @@
        - static/images/figure4_[a-d].jpg (FR3 circular tracking comparisons)
        - static/images/figure5.png       (signed TCP tracking error per axis)
        - static/images/hw_*_poster.jpg   (poster frames for the four hardware clips)
-       - static/images/overview_poster.jpg (title-slide poster for the narrated overview)
+       - static/images/overview_poster.jpg (title-slide poster; unused while the overview
+                                          is a YouTube embed, kept for the fallback below)
        - static/pdfs/bkmbd_paper.pdf     (the final paper; keep this filename, the
                                           citation_pdf_url and the Paper button point at it)
        (no favicon file: the tab icon is deliberately blank, see below)
@@ -37,24 +38,38 @@
        - static/videos/dk_crop.mp4          -> ditto, (b) DK-MBD
        - static/videos/dk_split_crop.mp4    -> ditto, (c) DK-MBD-split
        - static/videos/bk_mppi_crop.mp4     -> ditto, (d) BK-MPPI
-       - static/videos/overview.mp4         -> "Video" section, between the hero
-                                               Paper button and "Overview"
+       - static/videos/overview.mp4         -> NOT referenced any more. The "Video" section
+                                               embeds YouTube 8EfVQ5H4xxg instead; see below.
        The four hardware clips are 1280x720 30 fps encodes of a crop of the 4K
        originals (*.MP4 in the same folder, git-ignored), cropped so the robot
        has the same size in each.
 
-       overview.mp4 is the narrated talk video and is the one file here a viewer
-       scrubs, so re-encode any replacement rather than dropping the recorder's
-       output in as is:
+       WHY THE OVERVIEW IS ON YOUTUBE AND NOT SERVED FROM HERE:
+       The anonymous review mirror (anonymous.4open.science) streams through an
+       Express proxy that ignores Range requests -- it answers 200 with
+       Transfer-Encoding: chunked and no Content-Length, and sends no
+       Accept-Ranges. With no way to ask for a byte offset the browser marks the
+       source as streaming and reports an empty seekable range, so the scrub bar
+       cannot be dragged at all; the video only rolls forward. Shrinking or
+       re-encoding the file does not help, because that verdict does not depend
+       on how much has downloaded. Reading the bytes in JS and swapping in a
+       blob: URL would fix it, but the mirror serves the page under
+       `CSP: sandbox allow-scripts allow-popups allow-forms allow-modals` with no
+       allow-same-origin, so the page runs on an opaque origin and the video
+       carries no Access-Control-Allow-Origin -- the fetch is refused. Hosting it
+       on YouTube sidesteps all of it. The channel (icra2027anonymous) is a
+       submission-only account, so the embed stays anonymous.
+
+       static/videos/overview.mp4 is kept in the repo as the 17 MB faststart
+       encode of that talk, in case the embed has to be rolled back. If it is
+       ever put back in the page, re-encode any replacement rather than dropping
+       the recorder's output in as is:
 
          ffmpeg -i in.mp4 -c:v libx264 -profile:v high -preset slow -crf 23                 -pix_fmt yuv420p -g 61 -keyint_min 61 -sc_threshold 0                 -c:a aac -b:a 128k -movflags +faststart overview.mp4
 
-       +faststart is the part that matters: without it the moov atom lands after
-       the media data and the browser cannot play or seek until the entire file
-       has downloaded. -g 61 puts a keyframe every ~2 s so the scrub bar lands
-       quickly. It carries narration, so it is NOT muted and NOT looped, and it
-       is marked data-manual so index.js leaves it out of the scroll autoplay
-       that drives the short result clips.
+       and mark it data-manual so index.js leaves it out of the scroll autoplay
+       that drives the short result clips (it carries narration, so it must not
+       be muted or looped).
        ============================================================= -->
 
   <meta name="title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
@@ -100,6 +115,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ajax.googleapis.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://www.youtube-nocookie.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
 
   <title>BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control | Project Page</title>
 
@@ -196,16 +213,18 @@
       <div class="container is-fluid" style="width: min(96vw, 1280px); max-width: 1280px;">
         <div class="hero-body" style="padding-left: 0; padding-right: 0;">
           <div class="has-text-centered">
-            <video id="overview-video" controls playsinline preload="metadata" data-manual
-                   poster="static/images/overview_poster.jpg?v=2"
-                   aria-label="Narrated overview of BK-MBD: the motivation, the bilinear Koopman rollout, the annealed schedule, and the simulation and hardware results"
-                   style="width: 100%; height: auto; border-radius: 10px; background: #000;">
-              <source src="static/videos/overview.mp4?v=2" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+            <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000;">
+              <iframe src="https://www.youtube-nocookie.com/embed/8EfVQ5H4xxg?rel=0"
+                      title="Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control &mdash; narrated overview"
+                      style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen></iframe>
+            </div>
             <p class="content is-size-7 has-text-centered" style="margin-top: 0.6rem; opacity: 0.75;">
-              Narrated overview (2:54). Click the player, then use &larr;/&rarr; to seek 5&nbsp;s,
-              J/L for 10&nbsp;s, 0&ndash;9 to jump, Space to play or pause, M to mute, F for fullscreen.
+              Narrated overview (2:54). If the player does not appear, this mirror sandboxes
+              embedded frames &mdash;
+              <a href="https://youtu.be/8EfVQ5H4xxg" target="_blank" rel="noopener">open the video directly</a>.
             </p>
           </div>
         </div>
