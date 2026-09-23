@@ -91,14 +91,19 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Play every video while it is on screen, and pause it once it scrolls away.
+// Play every short result clip while it is on screen, and pause it once it scrolls away.
 //
-// The videos loop forever, so this is autoplay without the cost of it: an `autoplay`
+// The clips loop forever, so this is autoplay without the cost of it: an `autoplay`
 // attribute makes the browser fetch each clip at page load, and the real-world and book
 // clips alone are tens of megabytes. Here they stay at preload="metadata" until they are
 // about to come into view, and only the clip you are looking at is decoding.
+//
+// A video carrying data-manual is deliberately left out: the narrated overview is watched
+// on purpose, with its own sound and its own seeking, so forcing it to mute, loop and
+// play/pause on scroll would fight the viewer and would also pull the whole file down
+// the moment it scrolled past.
 function setupVideoAutoplay() {
-    const videos = document.querySelectorAll('main video');
+    const videos = document.querySelectorAll('main video:not([data-manual])');
     if (videos.length === 0) return;
 
     if (!('IntersectionObserver' in window)) {
@@ -131,13 +136,74 @@ function setupVideoAutoplay() {
     });
 }
 
+// Keyboard control for the narrated overview player.
+//
+// Native controls only take arrow keys once the control bar itself has focus, so clicking
+// the picture and pressing an arrow does nothing -- which reads as "the scrub bar will not
+// move". Making the element focusable and handling the keys here gives the usual shortcuts
+// wherever the player is focused. Seeking itself needs the moov atom at the front of the
+// file (ffmpeg -movflags +faststart); without it the browser cannot seek until the whole
+// file has arrived, and no amount of key handling helps.
+function setupVideoKeyboard() {
+    document.querySelectorAll('main video[data-manual]').forEach(video => {
+        video.setAttribute('tabindex', '0');
+
+        const seek = (delta) => {
+            if (!isFinite(video.duration)) return;
+            video.currentTime = Math.min(Math.max(video.currentTime + delta, 0), video.duration);
+        };
+
+        video.addEventListener('keydown', (event) => {
+            if (event.altKey || event.ctrlKey || event.metaKey) return;
+            let handled = true;
+
+            switch (event.key) {
+                case ' ':
+                case 'k':      video.paused ? video.play().catch(() => {}) : video.pause(); break;
+                case 'ArrowLeft':  seek(-5); break;
+                case 'ArrowRight': seek(5); break;
+                case 'j':      seek(-10); break;
+                case 'l':      seek(10); break;
+                case 'ArrowUp':    video.volume = Math.min(video.volume + 0.1, 1); break;
+                case 'ArrowDown':  video.volume = Math.max(video.volume - 0.1, 0); break;
+                case 'Home':   seek(-Infinity); break;
+                case 'End':    if (isFinite(video.duration)) video.currentTime = video.duration; break;
+                case 'm':      video.muted = !video.muted; break;
+                case 'f':
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else if (video.requestFullscreen) video.requestFullscreen();
+                    break;
+                default:
+                    // 0-9 jump to that tenth of the running time.
+                    if (/^[0-9]$/.test(event.key) && isFinite(video.duration)) {
+                        video.currentTime = video.duration * (Number(event.key) / 10);
+                    } else {
+                        handled = false;
+                    }
+            }
+
+            // Only swallow the key once it has been used, so Tab and Escape still work.
+            if (handled) event.preventDefault();
+        });
+
+        // Clicking the picture should focus the player, otherwise the keys above go to the
+        // page and the arrows just scroll it.
+        video.addEventListener('click', () => video.focus());
+    });
+}
+
 // Start the videos on their own, not from inside the jQuery block below. That block depends
 // on jQuery (a CDN script) and on bulmaCarousel, and if either is missing it throws before it
 // reaches the videos -- which is exactly how autoplay silently stopped working.
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupVideoAutoplay);
-} else {
+function setupVideos() {
     setupVideoAutoplay();
+    setupVideoKeyboard();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupVideos);
+} else {
+    setupVideos();
 }
 
 // Carousel and slider are template leftovers: this page has no .carousel or .slider element.

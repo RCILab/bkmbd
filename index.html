@@ -25,7 +25,9 @@
        - static/images/figure4_[a-d].jpg (FR3 circular tracking comparisons)
        - static/images/figure5.png       (signed TCP tracking error per axis)
        - static/images/hw_*_poster.jpg   (poster frames for the four hardware clips)
-       - static/pdfs/bkmbd_paper.pdf
+       - static/images/overview_poster.jpg (title-slide poster for the narrated overview)
+       - static/pdfs/bkmbd_paper.pdf     (the final paper; keep this filename, the
+                                          citation_pdf_url and the Paper button point at it)
        (no favicon file: the tab icon is deliberately blank, see below)
 
        VIDEOS IN USE:
@@ -40,6 +42,19 @@
        The four hardware clips are 1280x720 30 fps encodes of a crop of the 4K
        originals (*.MP4 in the same folder, git-ignored), cropped so the robot
        has the same size in each.
+
+       overview.mp4 is the narrated talk video and is the one file here a viewer
+       scrubs, so re-encode any replacement rather than dropping the recorder's
+       output in as is:
+
+         ffmpeg -i in.mp4 -c:v libx264 -profile:v high -preset slow -crf 23                 -pix_fmt yuv420p -g 61 -keyint_min 61 -sc_threshold 0                 -c:a aac -b:a 128k -movflags +faststart overview.mp4
+
+       +faststart is the part that matters: without it the moov atom lands after
+       the media data and the browser cannot play or seek until the entire file
+       has downloaded. -g 61 puts a keyframe every ~2 s so the scrub bar lands
+       quickly. It carries narration, so it is NOT muted and NOT looped, and it
+       is marked data-manual so index.js leaves it out of the scroll autoplay
+       that drives the short result clips.
        ============================================================= -->
 
   <meta name="title" content="BK-MBD: Koopman-Accelerated Model-Based Diffusion for Real-Time Robot Control">
@@ -112,7 +127,7 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js?v=2"></script>
+  <script defer src="static/js/index.js?v=3"></script>
 
   <script type="application/ld+json">
   {
@@ -181,10 +196,17 @@
       <div class="container is-fluid" style="width: min(96vw, 1280px); max-width: 1280px;">
         <div class="hero-body" style="padding-left: 0; padding-right: 0;">
           <div class="has-text-centered">
-            <video id="overview-video" controls muted loop playsinline preload="metadata"
-                   style="width: 100%; height: auto; border-radius: 10px;">
-              <source src="static/videos/overview.mp4" type="video/mp4">
+            <video id="overview-video" controls playsinline preload="metadata" data-manual
+                   poster="static/images/overview_poster.jpg?v=2"
+                   aria-label="Narrated overview of BK-MBD: the motivation, the bilinear Koopman rollout, the annealed schedule, and the simulation and hardware results"
+                   style="width: 100%; height: auto; border-radius: 10px; background: #000;">
+              <source src="static/videos/overview.mp4?v=2" type="video/mp4">
+              Your browser does not support the video tag.
             </video>
+            <p class="content is-size-7 has-text-centered" style="margin-top: 0.6rem; opacity: 0.75;">
+              Narrated overview (2:54). Click the player, then use &larr;/&rarr; to seek 5&nbsp;s,
+              J/L for 10&nbsp;s, 0&ndash;9 to jump, Space to play or pause, M to mute, F for fullscreen.
+            </p>
           </div>
         </div>
       </div>
@@ -229,9 +251,9 @@
           <div class="column is-full">
             <div class="content is-size-5" style="line-height: 1.7;">
               <ul>
-                <li><b>MBD at the control rate.</b> A bilinear rollout carrying the configuration-dependent input gain is evaluated without freezing or convexification, and the entire annealing process completes within the control period.</li>
-                <li><b>Annealing under a learned rollout.</b> Fixed noise and an annealed schedule are compared under both a learned and an exact rollout. Annealing improves closed-loop accuracy on the learned surrogate while the benefit disappears under the exact rollout, which shows that annealing relieves the sensitivity to rollout error.</li>
-                <li><b>Real-time validation on a physical robot.</b> BK-MBD tracks an initially unknown moving target on a physical manipulator within the control period. A state-independent input gain loses the target and a rollout of the true dynamics cannot be run at the control rate, so both requirements bind on hardware as well.</li>
+                <li><b>MBD at the control rate.</b> BK-MBD employs a bilinear rollout that represents the configuration-dependent input gain without freezing or convexification. Lifting the state once per control step reduces all subsequent candidate propagation to a fixed sequence of matrix&ndash;vector multiplications, allowing the full annealing process to run within the control period.</li>
+                <li><b>Annealing under a learned rollout.</b> Under the learned surrogate, annealing attains higher reaching accuracy than every fixed-noise schedule. Under the exact rollout, both the annealed and fixed-narrow schedules reach every goal, indicating that annealing reduces sensitivity to surrogate-model error.</li>
+                <li><b>Real-time validation on a physical robot.</b> On a physical FR3 tracking a moving target whose trajectory is unavailable in advance, BK-MBD completes all ten trials and returns every command within the 50&nbsp;ms control period, whereas every baseline fails the task, the deadline, or both.</li>
               </ul>
             </div>
           </div>
@@ -455,7 +477,7 @@
         <div class="columns is-centered">
           <div class="column is-full">
             <div class="content has-text-justified" style="line-height: 1.7;">
-              <p>Five methods track a target moving along a circle on the physical FR3 under the same CPU budget. The target traverses a circle of radius 0.10&nbsp;m and period 16&nbsp;s in the <em>yz</em> plane, and the trajectory is <b>not given in advance</b>, so the controller sees only the target position at each control step. Each trial runs for 35&nbsp;s &mdash; a 3&nbsp;s lead-in followed by two revolutions &mdash; and a guard commands zero velocity and ends the trial when the Cartesian tracking error exceeds 80&nbsp;mm for 0.25&nbsp;s. Each rollout class is run ten times, over planner seeds 0 to 9.</p>
+              <p>Five methods track a target moving along a circle on the physical FR3 under the same CPU budget. The target traverses a circle of radius 0.10&nbsp;m and period 16&nbsp;s in the <em>yz</em> plane, and the trajectory is <b>not given in advance</b>, so the controller sees only the target position at each control step. Each trial runs for 35&nbsp;s &mdash; a 3&nbsp;s lead-in followed by two revolutions &mdash; and a guard commands zero velocity and ends the trial when the Cartesian tracking error exceeds 80&nbsp;mm for 0.25&nbsp;s. Each rollout class is run ten times, over planner seeds 0 to 9. The models are identified from data recorded on this robot, and BK-MPPI is the single-stage <em>narrow</em> condition, which shows a distinct learned-rollout effect in the schedule table above.</p>
             </div>
           </div>
         </div>
@@ -601,7 +623,8 @@
                   <tr><td>Horizon T</td><td>15</td><td>25</td></tr>
                   <tr><td>Noise &sigma;</td><td>1.2 &rarr; 0.3</td><td>1.6 &rarr; 0.3</td></tr>
                   <tr><td>Temperature &alpha;</td><td>0.4</td><td>0.5</td></tr>
-                  <tr><td>Lift dimension r</td><td>20</td><td>13</td></tr>
+                  <tr><td>Lift dimension r, latent weight &gamma;</td><td>20, 0.1</td><td>13, 0.1</td></tr>
+                  <tr><td>Encoder &psi;<sub>&theta;</sub>, layers &times; width</td><td>2 &times; 96, tanh</td><td>2 &times; 64, tanh</td></tr>
                   <tr><td>Fixed feature map &tau;</td><td>[sin q, cos q]</td><td>identity</td></tr>
                   <tr><td>Training snippets, T steps each</td><td>6000</td><td>4000</td></tr>
                 </tbody>
@@ -609,7 +632,7 @@
             </div>
 
             <div class="content has-text-justified" style="line-height: 1.7;">
-              <p>All timings are measured on an Intel Core Ultra 5 225F with ten cores and no GPU. In the reaching experiments each trial starts from rest and drives the tracked output toward a goal over the fixed budget above, without early termination. A trial reaches a tolerance at the first control step whose tracking error falls below it. The reaching experiments cross 5 training seeds, each with its own dataset, with 10 goals for 50 trials per condition, and the trials are paired across conditions.</p>
+              <p>All timings are measured on an Intel Core Ultra 5 225F with ten cores and no GPU. Simulation uses ten PyTorch CPU threads, whereas the physical-robot trials limit PyTorch inference to four. In the reaching experiments each trial starts from rest and drives the tracked output toward a goal over the fixed budget above, without early termination. A trial reaches a tolerance at the first control step whose tracking error falls below it. The reaching experiments cross 5 training seeds, each with its own dataset, with 10 goals for 50 trials per condition, and the trials are paired across conditions.</p>
             </div>
           </div>
         </div>
@@ -621,7 +644,7 @@
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Conclusion</h2>
         <div class="content has-text-justified" style="line-height: 1.7;">
-          <p>BK-MBD runs the annealed sampling of MBD at the control rate by performing every rollout with a bilinear Koopman model identified from interaction data. The simulation experiments separate the effects of the rollout input gain, the noise schedule under a learned rollout, and the structure of the free space. On a physical manipulator, BK-MBD tracked a moving target and met the control deadline at every step; no other method did both. All tasks here are contact-free, so extending this substitution to contact-rich settings remains future work.</p>
+          <p>We introduced BK-MBD, which runs the annealed sampling of MBD at the control rate by performing every rollout with a bilinear Koopman model identified from interaction data. In simulation, exchanging one component of the controller at a time separated three effects: the input gain of the rollout, the noise schedule under a learned rollout, and the structure of the free space. On a physical manipulator, BK-MBD tracked a moving target and met the control deadline at every step; no other method did both. The input gain and the noise schedule kept the roles that simulation assigned them. MBD owes its behavior in contact-rich settings to a rollout that contains the contact, and a lifted model would instead have to represent it. Every task here is contact-free, so whether the substitution preserves that behavior is left for future work.</p>
         </div>
       </div>
     </section>
