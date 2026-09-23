@@ -195,9 +195,20 @@ function setupVideoKeyboard() {
 // Start the videos on their own, not from inside the jQuery block below. That block depends
 // on jQuery (a CDN script) and on bulmaCarousel, and if either is missing it throws before it
 // reaches the videos -- which is exactly how autoplay silently stopped working.
+// If the overview file cannot be fetched at all, say so and offer the download rather
+// than leaving a dead player on the page. Same handling as the CAMP-MPPI page.
+function setupVideoFallbackMessage() {
+    const src = document.getElementById('overview-src');
+    const msg = document.getElementById('overview-msg');
+    if (src && msg) {
+        src.addEventListener('error', () => { msg.hidden = false; });
+    }
+}
+
 function setupVideos() {
     setupVideoAutoplay();
     setupVideoKeyboard();
+    setupVideoFallbackMessage();
 }
 
 if (document.readyState === 'loading') {
