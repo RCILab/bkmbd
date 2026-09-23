@@ -205,30 +205,59 @@ function setupVideoFallbackMessage() {
     }
 }
 
-// Make the hero buttons open on a plain click on sandboxed hosts.
+// On a sandboxed host, offer the video address instead of a tab that cannot load.
 //
 // The anonymous review mirror serves the page under
-// `CSP: sandbox allow-scripts allow-popups allow-forms allow-modals`. That grants popups but
-// not top-level navigation, so an anchor's own target="_blank" is refused and a normal click
-// appears to do nothing, while ctrl-click still opens a tab. Asking for the popup explicitly
-// goes through the permission that is granted.
+// `CSP: sandbox allow-scripts allow-popups allow-forms allow-modals`. Popups are granted, so
+// the Video button does open a tab -- but that tab inherits the sandbox, lands on an opaque
+// origin, and YouTube refuses to be loaded there (ERR_BLOCKED_BY_RESPONSE). Opening the
+// window from script hits exactly the same wall, so there is no way to make a plain click
+// reach the video from here.
 //
-// The click is only swallowed once the window is actually open, so if a popup blocker or a
-// stricter sandbox refuses it, the anchor's default behaviour still runs and nothing is lost.
-function setupExternalLinks() {
-    document.querySelectorAll('a.external-link[target="_blank"]').forEach(link => {
+// A ctrl-click does work, because the browser gives that tab a fresh context of its own. So
+// on a sandboxed host only, intercept the click, put the address on the clipboard, and reveal
+// it for copying. Everywhere else -- the real site included -- the anchor is left completely
+// alone, which is why this checks the origin rather than the hostname.
+function setupSandboxedVideoLink() {
+    let sandboxed = false;
+    try {
+        sandboxed = (window.origin === 'null' || String(window.location.origin) === 'null');
+    } catch (e) {
+        sandboxed = true;   // Reading it threw, which only happens on an opaque origin.
+    }
+    if (!sandboxed) return;
+
+    const note = document.getElementById('video-fallback');
+    const field = document.getElementById('video-fallback-url');
+
+    document.querySelectorAll('a[data-sandbox-copy]').forEach(link => {
         link.addEventListener('click', (event) => {
-            // Leave the browser's own shortcuts (ctrl/cmd/shift-click, middle click) alone.
-            if (event.defaultPrevented || event.button !== 0) return;
+            // The modified clicks genuinely work here, so never take those over.
+            if (event.button !== 0) return;
             if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
 
-            let opened = null;
-            try {
-                opened = window.open(link.href, '_blank', 'noopener');
-            } catch (e) {
-                opened = null;
+            event.preventDefault();
+            if (!note) return;
+
+            note.hidden = false;
+            if (field) field.textContent = link.href;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link.href).then(() => {
+                    note.setAttribute('data-copied', 'yes');
+                }).catch(() => {});
             }
-            if (opened) event.preventDefault();
+
+            // Select the address so a manual copy is one keystroke.
+            if (field && window.getSelection && document.createRange) {
+                try {
+                    const range = document.createRange();
+                    range.selectNodeContents(field);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } catch (e) { /* selection is a nicety, not a requirement */ }
+            }
         });
     });
 }
@@ -237,7 +266,7 @@ function setupVideos() {
     setupVideoAutoplay();
     setupVideoKeyboard();
     setupVideoFallbackMessage();
-    setupExternalLinks();
+    setupSandboxedVideoLink();
 }
 
 if (document.readyState === 'loading') {

@@ -67,12 +67,19 @@
        (channel icra2027anonymous, a submission-only account) for reviewers who
        want to scrub.
 
-       That sandbox also withholds allow-top-navigation, so an anchor's own
-       target="_blank" is refused and a plain click on the hero buttons looks
-       dead, while ctrl-click still opens a tab. allow-popups IS granted, so
-       setupExternalLinks() in index.js asks for the popup explicitly and only
-       swallows the click once the window is open -- if it is ever blocked, the
-       anchor's default behaviour still runs.
+       Clicking that Video button on the mirror does open a tab -- allow-popups
+       is granted -- but the tab inherits the sandbox, lands on an opaque origin,
+       and YouTube refuses to load there (ERR_BLOCKED_BY_RESPONSE). Opening the
+       window from script hits the identical wall, so do not try to "fix" this
+       with window.open: there is no way for a plain click to reach the video
+       from this host. A ctrl-click does work, because the browser gives that tab
+       a context of its own.
+
+       So setupSandboxedVideoLink() in index.js detects the opaque origin and,
+       there only, intercepts the plain click to copy the address and reveal it
+       for pasting. Modified clicks are left alone because they genuinely work,
+       and on any normal host -- the real site included -- the anchor is
+       untouched.
 
        Re-encode any replacement rather than dropping the recorder's output in
        as is:
@@ -154,7 +161,7 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js?v=5"></script>
+  <script defer src="static/js/index.js?v=6"></script>
 
   <script type="application/ld+json">
   {
@@ -210,12 +217,21 @@
                     </a>
                   </span>
                   <span class="link-block">
-                    <a href="https://youtu.be/8EfVQ5H4xxg" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                    <a href="https://youtu.be/8EfVQ5H4xxg" target="_blank" rel="noopener" data-sandbox-copy
+                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon"><i class="fab fa-youtube"></i></span>
                       <span>Video</span>
                     </a>
                   </span>
                 </div>
+
+                <p id="video-fallback" hidden class="content is-size-7"
+                   style="margin-top: 0.75rem; opacity: 0.85; line-height: 1.5;">
+                  This mirror sandboxes the page, so the browser will not load YouTube from it.
+                  Ctrl-click (&#8984;-click on a Mac) the Video button, or copy this address:
+                  <br>
+                  <code id="video-fallback-url" style="user-select: all;">https://youtu.be/8EfVQ5H4xxg</code>
+                </p>
               </div>
 
             </div>
