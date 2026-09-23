@@ -63,11 +63,16 @@
          - Embedding YouTube. That sandbox is inherited by nested frames, so the
            player cannot reach storage and renders blank on the mirror.
        The talk is therefore served from here, exactly as the CAMP-MPPI page does
-       it, and the caption points at https://youtu.be/8EfVQ5H4xxg (channel
-       icra2027anonymous, a submission-only account) for reviewers who want to
-       scrub. The address is written out in full because allow-popups-to-escape-
-       sandbox is absent too, so a new tab may inherit the sandbox and the
-       reviewer may have to paste it.
+       it, and the hero carries a Video button to https://youtu.be/8EfVQ5H4xxg
+       (channel icra2027anonymous, a submission-only account) for reviewers who
+       want to scrub.
+
+       That sandbox also withholds allow-top-navigation, so an anchor's own
+       target="_blank" is refused and a plain click on the hero buttons looks
+       dead, while ctrl-click still opens a tab. allow-popups IS granted, so
+       setupExternalLinks() in index.js asks for the popup explicitly and only
+       swallows the click once the window is open -- if it is ever blocked, the
+       anchor's default behaviour still runs.
 
        Re-encode any replacement rather than dropping the recorder's output in
        as is:
@@ -149,7 +154,7 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js?v=4"></script>
+  <script defer src="static/js/index.js?v=5"></script>
 
   <script type="application/ld+json">
   {
@@ -199,9 +204,15 @@
               <div class="column has-text-centered">
                 <div class="publication-links">
                   <span class="link-block">
-                    <a href="static/pdfs/bkmbd_paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <a href="static/pdfs/bkmbd_paper.pdf" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
                       <span class="icon"><i class="fas fa-file-pdf"></i></span>
                       <span>Paper</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://youtu.be/8EfVQ5H4xxg" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fab fa-youtube"></i></span>
+                      <span>Video</span>
                     </a>
                   </span>
                 </div>
@@ -233,11 +244,9 @@
             <p class="content is-size-7 has-text-centered" style="margin-top: 0.6rem; opacity: 0.75;">
               Narrated overview (2:54). Click the player, then use &larr;/&rarr; to seek 5&nbsp;s,
               J/L for 10&nbsp;s, 0&ndash;9 to jump, Space to play or pause, M to mute, F for fullscreen.
-              <br>
               If the scrub bar will not move, this host does not serve byte ranges, which the
-              player needs in order to seek. The same talk, with working controls, is at
-              <a href="https://youtu.be/8EfVQ5H4xxg" target="_blank" rel="noopener">https://youtu.be/8EfVQ5H4xxg</a>
-              &mdash; copy the address if the link does not open.
+              player needs in order to seek &mdash; the <b>Video</b> button above opens a copy
+              with working controls.
             </p>
           </div>
         </div>

@@ -205,10 +205,39 @@ function setupVideoFallbackMessage() {
     }
 }
 
+// Make the hero buttons open on a plain click on sandboxed hosts.
+//
+// The anonymous review mirror serves the page under
+// `CSP: sandbox allow-scripts allow-popups allow-forms allow-modals`. That grants popups but
+// not top-level navigation, so an anchor's own target="_blank" is refused and a normal click
+// appears to do nothing, while ctrl-click still opens a tab. Asking for the popup explicitly
+// goes through the permission that is granted.
+//
+// The click is only swallowed once the window is actually open, so if a popup blocker or a
+// stricter sandbox refuses it, the anchor's default behaviour still runs and nothing is lost.
+function setupExternalLinks() {
+    document.querySelectorAll('a.external-link[target="_blank"]').forEach(link => {
+        link.addEventListener('click', (event) => {
+            // Leave the browser's own shortcuts (ctrl/cmd/shift-click, middle click) alone.
+            if (event.defaultPrevented || event.button !== 0) return;
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+
+            let opened = null;
+            try {
+                opened = window.open(link.href, '_blank', 'noopener');
+            } catch (e) {
+                opened = null;
+            }
+            if (opened) event.preventDefault();
+        });
+    });
+}
+
 function setupVideos() {
     setupVideoAutoplay();
     setupVideoKeyboard();
     setupVideoFallbackMessage();
+    setupExternalLinks();
 }
 
 if (document.readyState === 'loading') {
